@@ -1,10 +1,14 @@
 # Lojban Logic Trainer
 
-> Learn Lojban as a formal logic system, not a natural language
+> Learn Lojban as a formal logic system - Progressive Web App, installable & offline-capable
+
+## 🚀 Live Demo
+
+**Coming soon at**: [ekats.github.io/Lojbanana](https://ekats.github.io/Lojbanana/)
 
 ## What is this?
 
-**Lojban Logic Trainer** is an interactive web app that teaches Lojban from the ground up - but with a twist. Instead of teaching it like a natural language, it teaches Lojban as a **speakable formal logic system**.
+**Lojban Logic Trainer** is a Progressive Web App (PWA) that teaches Lojban from the ground up - but with a twist. Instead of teaching it like a natural language, it teaches Lojban as a **speakable formal logic system**.
 
 Think of it like learning programming:
 - **Predicates (selbri)** = functions/methods
@@ -19,6 +23,14 @@ Lojban is designed for:
 - **Explicit logic** - All logical relationships must be marked
 - **Machine-parseability** - Perfect for human-AI communication
 - **Formal reasoning** - Express first-order predicate logic in natural speech
+
+## PWA Features
+
+- **📱 Installable** - Add to home screen on mobile/desktop
+- **⚡ Offline Support** - Works without internet after first visit
+- **🚀 Fast Loading** - Service worker caching for instant loads
+- **📦 Auto-Updates** - New versions deployed automatically via GitHub Actions
+- **🎨 App Icons** - Custom logic gate design representing formal logic
 
 ## Features
 
@@ -76,7 +88,31 @@ Then open your browser to `http://localhost:5173`
 npm run build
 ```
 
-The built files will be in the `dist/` directory.
+The built files will be in the `dist/` directory with full PWA support.
+
+## Deployment
+
+### Automatic Deployment (GitHub Actions)
+
+This repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically deploys to GitHub Pages on every push to `main`.
+
+**To activate:**
+1. Go to repository **Settings** → **Pages**
+2. Source: **GitHub Actions**
+3. Push to `main` branch - deployment happens automatically!
+
+The app will be live at: `https://ekats.github.io/Lojbanana/`
+
+### Manual Deployment
+
+If you prefer manual deployment:
+
+```bash
+cd lojban-trainer
+npm run deploy
+```
+
+This builds and deploys to the `gh-pages` branch.
 
 ## Curriculum Overview
 
@@ -134,10 +170,13 @@ This app teaches it like **programming**:
 
 ## Technical Stack
 
-- **React** - UI framework
-- **Vite** - Build tool
+- **React 19** - UI framework
+- **Vite** - Build tool with PWA plugin
+- **vite-plugin-pwa** - Progressive Web App support
+- **Workbox** - Service worker strategies
 - **Custom Lojban Parser** - Tokenization and validation
 - **localStorage** - Progress persistence
+- **GitHub Actions** - Automated deployment
 
 ## Project Structure
 
