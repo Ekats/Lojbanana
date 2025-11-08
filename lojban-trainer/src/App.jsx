@@ -57,6 +57,22 @@ function App() {
     }));
   };
 
+  const handleClearData = async () => {
+    if (window.confirm('Clear all progress and cached data? This cannot be undone!')) {
+      // Clear localStorage
+      localStorage.clear();
+
+      // Clear service worker caches
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+      }
+
+      // Reload the page
+      window.location.reload();
+    }
+  };
+
   const currentLesson = currentLessonId ? getLessonById(currentLessonId) : null;
 
   return (
@@ -77,6 +93,9 @@ function App() {
             <span className="current-lesson">Vocabulary Practice</span>
           </div>
         )}
+        <button onClick={handleClearData} className="clear-data-btn" title="Clear all progress and cache">
+          🗑️ Clear Data
+        </button>
       </nav>
 
       <main className="app-main">
