@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
-import { getRandomWords, getAllVocabulary } from '../utils/vocabulary';
+import { getLevelById } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
 export default function VocabularyTrainer({ onExit }) {
+  const [currentLevel, setCurrentLevel] = useState(null);
   const [sessionWords, setSessionWords] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -17,24 +19,25 @@ export default function VocabularyTrainer({ onExit }) {
   const [isSessionComplete, setIsSessionComplete] = useState(false);
   const [exerciseTypes, setExerciseTypes] = useState([]);
 
-  // Load or initialize progress
-  useEffect(() => {
-    const savedProgress = localStorage.getItem('vocab-progress');
-    if (savedProgress) {
-      const progress = JSON.parse(savedProgress);
-      setStreak(progress.streak || 0);
-    }
+  const handleSelectLevel = (levelId) => {
+    const level = getLevelById(levelId);
+    if (!level) return;
 
-    // Start a new session
-    startNewSession();
-  }, []);
+    setCurrentLevel(level);
+    startLevelSession(level);
+  };
 
-  const startNewSession = () => {
-    // Get 10 random words for this session
-    const words = getRandomWords(10);
-    setSessionWords(words);
+  const startLevelSession = (level) => {
+    // Use all words from the level
+    const words = [...level.words];
+
+    // Shuffle words
+    const shuffled = words.sort(() => Math.random() - 0.5);
+
+    setSessionWords(shuffled);
     setCurrentIndex(0);
     setLives(3);
+    setStreak(0);
     setSessionStats({
       correct: 0,
       incorrect: 0,
@@ -43,15 +46,27 @@ export default function VocabularyTrainer({ onExit }) {
     setIsSessionComplete(false);
 
     // Generate exercise types for each word
-    const types = words.map(() => {
-      const allTypes = [
-        'flashcard',
-        'translate-to-english',
-        'multiple-choice-lojban',
-        'multiple-choice-english',
-        'construct-sentence'
-      ];
-      return allTypes[Math.floor(Math.random() * allTypes.length)];
+    // Beginners get more flashcards, advanced get more challenging exercises
+    const types = shuffled.map((word, idx) => {
+      if (level.id <= 3) {
+        // Early levels: more flashcards and multiple choice
+        const beginnerTypes = [
+          'flashcard',
+          'flashcard', // More flashcards
+          'multiple-choice-english',
+          'multiple-choice-lojban',
+        ];
+        return beginnerTypes[idx % beginnerTypes.length];
+      } else {
+        // Later levels: mix of all types
+        const allTypes = [
+          'flashcard',
+          'translate-to-english',
+          'multiple-choice-lojban',
+          'multiple-choice-english',
+        ];
+        return allTypes[Math.floor(Math.random() * allTypes.length)];
+      }
     });
     setExerciseTypes(types);
   };
@@ -108,7 +123,7 @@ export default function VocabularyTrainer({ onExit }) {
       totalXP: 0,
       streak: 0,
       sessionsCompleted: 0,
-      wordsLearned: new Set()
+      levelProgress: {}
     };
 
     if (completed) {
@@ -116,19 +131,32 @@ export default function VocabularyTrainer({ onExit }) {
       progress.streak = streak;
       progress.sessionsCompleted = (progress.sessionsCompleted || 0) + 1;
 
-      // Add words to learned set
-      if (!progress.wordsLearned) progress.wordsLearned = [];
-      sessionWords.forEach(word => {
-        if (!progress.wordsLearned.includes(word.lojban)) {
-          progress.wordsLearned.push(word.lojban);
-        }
-      });
-    } else {
-      progress.streak = 0;
-    }
+      // Track level progress
+      if (!progress.levelProgress) progress.levelProgress = {};
+      if (!progress.levelProgress[currentLevel.id]) {
+        progress.levelProgress[currentLevel.id] = {
+          wordsLearned: 0,
+          completed: false
+        };
+      }
 
-    localStorage.setItem('vocab-progress', JSON.stringify(progress));
+      const levelProg = progress.levelProgress[currentLevel.id];
+      levelProg.wordsLearned = currentLevel.words.length;
+      levelProg.completed = sessionStats.correct >= Math.floor(currentLevel.words.length * 0.7); // 70% to complete
+
+      localStorage.setItem('vocab-progress', JSON.stringify(progress));
+    }
   };
+
+  const handleBackToLevels = () => {
+    setCurrentLevel(null);
+    setIsSessionComplete(false);
+  };
+
+  // Show level selection if no level selected
+  if (!currentLevel) {
+    return <LevelSelection onSelectLevel={handleSelectLevel} onExit={onExit} />;
+  }
 
   const currentWord = sessionWords[currentIndex];
   const currentExerciseType = exerciseTypes[currentIndex];
@@ -137,7 +165,7 @@ export default function VocabularyTrainer({ onExit }) {
   if (sessionWords.length === 0) {
     return (
       <div className="vocabulary-trainer">
-        <div className="loading">Loading vocabulary...</div>
+        <div className="loading">Loading level...</div>
       </div>
     );
   }
@@ -151,6 +179,7 @@ export default function VocabularyTrainer({ onExit }) {
             {passed ? '🎉' : '😢'}
           </div>
           <h1>{passed ? 'Great Work!' : 'Session Failed'}</h1>
+          <p className="level-name">{currentLevel.name}</p>
 
           <div className="session-stats">
             <div className="stat">
@@ -172,8 +201,11 @@ export default function VocabularyTrainer({ onExit }) {
           </div>
 
           <div className="session-actions">
-            <button onClick={startNewSession} className="btn-continue">
+            <button onClick={() => startLevelSession(currentLevel)} className="btn-continue">
               Practice Again
+            </button>
+            <button onClick={handleBackToLevels} className="btn-secondary">
+              Choose Level
             </button>
             <button onClick={onExit} className="btn-exit">
               Back to Menu
@@ -188,7 +220,12 @@ export default function VocabularyTrainer({ onExit }) {
     <div className="vocabulary-trainer">
       {/* Header */}
       <div className="trainer-header">
-        <button onClick={onExit} className="btn-close">✕</button>
+        <button onClick={handleBackToLevels} className="btn-close">✕</button>
+
+        <div className="level-badge">
+          <span className="level-icon-small">{currentLevel.icon}</span>
+          <span className="level-name-small">{currentLevel.name}</span>
+        </div>
 
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${progress}%` }} />
@@ -213,12 +250,13 @@ export default function VocabularyTrainer({ onExit }) {
       {/* Exercise */}
       <div className="trainer-content">
         <div className="exercise-counter">
-          Question {currentIndex + 1} of {sessionWords.length}
+          Word {currentIndex + 1} of {sessionWords.length}
         </div>
 
         <VocabularyExercise
           word={currentWord}
           exerciseType={currentExerciseType}
+          levelId={currentLevel.id}
           onComplete={handleExerciseComplete}
           onSkip={handleSkip}
         />

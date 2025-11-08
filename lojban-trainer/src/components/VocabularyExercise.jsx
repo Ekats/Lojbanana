@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
-import { generateWrongAnswers } from '../utils/vocabulary';
+import { generateWrongAnswers } from '../utils/vocabularyLevels';
 import './VocabularyExercise.css';
 
-export default function VocabularyExercise({ word, exerciseType, onComplete, onSkip }) {
+export default function VocabularyExercise({ word, exerciseType, levelId, onComplete, onSkip }) {
   const [userAnswer, setUserAnswer] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [isCorrect, setIsCorrect] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [options, setOptions] = useState([]);
   const [constructedWords, setConstructedWords] = useState([]);
+  const [showPeek, setShowPeek] = useState(false);
 
   useEffect(() => {
     if (exerciseType === 'multiple-choice-lojban' || exerciseType === 'multiple-choice-english') {
-      const wrongAnswers = generateWrongAnswers(word, 3);
+      const wrongAnswers = generateWrongAnswers(word, levelId, 3);
       const allOptions = [word, ...wrongAnswers];
       setOptions(allOptions.sort(() => Math.random() - 0.5));
     }
@@ -75,6 +76,13 @@ export default function VocabularyExercise({ word, exerciseType, onComplete, onS
     }
   };
 
+  const handlePeek = () => {
+    setShowPeek(true);
+    setTimeout(() => {
+      setShowPeek(false);
+    }, 2000); // Show for 2 seconds
+  };
+
   const renderExercise = () => {
     switch (exerciseType) {
       case 'flashcard':
@@ -115,7 +123,15 @@ export default function VocabularyExercise({ word, exerciseType, onComplete, onS
             <div className="question">
               <h3>What does this mean in English?</h3>
               <div className="lojban-word">{word.lojban}</div>
+              {showPeek && (
+                <div className="peek-overlay">
+                  <div className="peek-answer">{word.english}</div>
+                </div>
+              )}
             </div>
+            <button onClick={handlePeek} className="btn-peek" disabled={showPeek}>
+              👁️ Peek
+            </button>
             <input
               type="text"
               className="answer-input"
@@ -140,7 +156,15 @@ export default function VocabularyExercise({ word, exerciseType, onComplete, onS
           <div className="multiple-choice-exercise">
             <div className="question">
               <h3>Which word means "{word.english}"?</h3>
+              {showPeek && (
+                <div className="peek-overlay">
+                  <div className="peek-answer">{word.lojban}</div>
+                </div>
+              )}
             </div>
+            <button onClick={handlePeek} className="btn-peek" disabled={showPeek || showFeedback}>
+              👁️ Peek
+            </button>
             <div className="options-grid">
               {options.map((option, idx) => (
                 <button
@@ -168,7 +192,15 @@ export default function VocabularyExercise({ word, exerciseType, onComplete, onS
           <div className="multiple-choice-exercise">
             <div className="question">
               <h3>What does "{word.lojban}" mean?</h3>
+              {showPeek && (
+                <div className="peek-overlay">
+                  <div className="peek-answer">{word.english}</div>
+                </div>
+              )}
             </div>
+            <button onClick={handlePeek} className="btn-peek" disabled={showPeek || showFeedback}>
+              👁️ Peek
+            </button>
             <div className="options-grid">
               {options.map((option, idx) => (
                 <button
@@ -198,7 +230,15 @@ export default function VocabularyExercise({ word, exerciseType, onComplete, onS
               <div className="target-english">
                 {word.examples[0].split('=')[1].trim()}
               </div>
+              {showPeek && (
+                <div className="peek-overlay">
+                  <div className="peek-answer">{word.examples[0].split('=')[0].trim()}</div>
+                </div>
+              )}
             </div>
+            <button onClick={handlePeek} className="btn-peek" disabled={showPeek || showFeedback}>
+              👁️ Peek
+            </button>
 
             <div className="construction-area">
               <div className="constructed-sentence">

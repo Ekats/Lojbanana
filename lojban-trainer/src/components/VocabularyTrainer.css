@@ -199,6 +199,48 @@
   background: #7f8c8d;
 }
 
+.btn-secondary {
+  padding: 15px 30px;
+  background: #4ecdc4;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #3dbaae;
+}
+
+.level-badge {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.level-icon-small {
+  font-size: 20px;
+}
+
+.level-name-small {
+  font-size: 14px;
+}
+
+.level-name {
+  font-size: 20px;
+  color: #7f8c8d;
+  margin-top: 10px;
+  font-weight: normal;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .vocabulary-trainer {
