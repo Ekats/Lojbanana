@@ -226,6 +226,78 @@ export function getUnlockedLevels(totalXP) {
   return vocabularyLevels.filter(level => totalXP >= level.requiredXP);
 }
 
+// Generate sentences from learned words based on Lojban grammar
+export function generateSentences(currentLevelId, count = 3) {
+  // Get all words learned up to current level
+  const learnedWords = [];
+  for (let i = 1; i <= currentLevelId; i++) {
+    const level = getLevelById(i);
+    if (level) {
+      learnedWords.push(...level.words);
+    }
+  }
+
+  // Separate into sumti (pronouns/arguments) and selbri (predicates)
+  const sumti = learnedWords.filter(w => w.category === 'pronouns');
+  const selbri = learnedWords.filter(w => w.places && w.places.length > 0);
+
+  if (sumti.length === 0 || selbri.length === 0) {
+    return []; // Not enough words to generate sentences
+  }
+
+  const sentences = [];
+  const used = new Set(); // Track to avoid duplicates
+
+  while (sentences.length < count && sentences.length < selbri.length * sumti.length) {
+    // Pick random predicate
+    const predicate = selbri[Math.floor(Math.random() * selbri.length)];
+    const numPlaces = predicate.places.length;
+
+    // Generate based on place structure
+    let template, blank, english, hint;
+
+    if (numPlaces === 1) {
+      // One-place predicate: "mi gleki" (I am happy)
+      const subject = sumti[Math.floor(Math.random() * sumti.length)];
+      template = `__ ${predicate.lojban}`;
+      blank = subject.lojban;
+      english = `${subject.english.split(',')[0]} ${predicate.english}`;
+      hint = `Use a pronoun like "${subject.english.split(',')[0]}"`;
+    } else {
+      // Two-place predicate: "mi prami do" (I love you)
+      const subject = sumti[Math.floor(Math.random() * sumti.length)];
+      const objectCandidates = sumti.filter(s => s.lojban !== subject.lojban);
+      if (objectCandidates.length === 0) continue; // Skip if no valid object
+
+      const object = objectCandidates[Math.floor(Math.random() * objectCandidates.length)];
+
+      // Randomly blank subject or object
+      const blankSubject = Math.random() < 0.5;
+
+      if (blankSubject) {
+        template = `__ ${predicate.lojban} ${object.lojban}`;
+        blank = subject.lojban;
+        english = `${subject.english.split(',')[0]} ${predicate.english} ${object.english.split(',')[0]}`;
+        hint = `Who is doing the action?`;
+      } else {
+        template = `${subject.lojban} ${predicate.lojban} __`;
+        blank = object.lojban;
+        english = `${subject.english.split(',')[0]} ${predicate.english} ${object.english.split(',')[0]}`;
+        hint = `Who/what receives the action?`;
+      }
+    }
+
+    // Check for duplicates
+    const key = template + blank;
+    if (!used.has(key)) {
+      used.add(key);
+      sentences.push({ template, blank, english, hint });
+    }
+  }
+
+  return sentences;
+}
+
 // Generate wrong answers for a word (from same level or nearby levels)
 export function generateWrongAnswers(word, levelId, count = 3) {
   const currentLevel = getLevelById(levelId);
