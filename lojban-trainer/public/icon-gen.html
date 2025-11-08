@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+</head>
+<body>
+    <h1>Icon Generator</h1>
+    <canvas id="canvas192" width="192" height="192"></canvas>
+    <canvas id="canvas512" width="512" height="512"></canvas>
+    <br>
+    <button onclick="downloadIcons()">Download Icons</button>
+    
+    <script>
+        function drawIcon(canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Scale for different sizes
+            const scale = size / 512;
+            ctx.scale(scale, scale);
+            
+            // Draw AND gate
+            ctx.fillStyle = '#4ecdc4';
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 8;
+            
+            ctx.beginPath();
+            ctx.moveTo(196, 176);
+            ctx.lineTo(196, 336);
+            ctx.lineTo(276, 336);
+            ctx.arc(276, 256, 80, Math.PI/2, -Math.PI/2, false);
+            ctx.lineTo(276, 176);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            
+            // Input lines
+            ctx.beginPath();
+            ctx.moveTo(156, 216);
+            ctx.lineTo(196, 216);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(156, 296);
+            ctx.lineTo(196, 296);
+            ctx.stroke();
+            
+            // Output line
+            ctx.beginPath();
+            ctx.moveTo(326, 256);
+            ctx.lineTo(366, 256);
+            ctx.stroke();
+            
+            // Dots
+            ctx.fillStyle = '#ffa502';
+            ctx.beginPath();
+            ctx.arc(156, 216, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(156, 296, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(366, 256, 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Text
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold ' + (60 * scale) + 'px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText('lo', size/2, size * 0.86);
+        }
+        
+        drawIcon(document.getElementById('canvas192'));
+        drawIcon(document.getElementById('canvas512'));
+        
+        function downloadIcons() {
+            const canvas192 = document.getElementById('canvas192');
+            const canvas512 = document.getElementById('canvas512');
+            
+            canvas192.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon-192.png';
+                a.click();
+            });
+            
+            canvas512.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'icon-512.png';
+                a.click();
+            });
+        }
+    </script>
+</body>
+</html>
