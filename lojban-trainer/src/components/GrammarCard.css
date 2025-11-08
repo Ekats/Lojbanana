@@ -55,23 +55,60 @@
   font-weight: bold;
 }
 
-.grammar-content {
+.grammar-why,
+.grammar-how,
+.grammar-next {
   text-align: left;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
-.grammar-content p {
-  font-size: 16px;
+.why-label,
+.how-label,
+.next-label,
+.example-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+}
+
+.grammar-why p,
+.grammar-how p,
+.grammar-next p {
+  font-size: 15px;
   color: #34495e;
   line-height: 1.6;
-  margin: 12px 0;
+  margin: 0;
+}
+
+.grammar-why {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #f39c12;
+}
+
+.grammar-why .why-label {
+  color: #d35400;
+}
+
+.grammar-how {
+  background: #f0f8ff;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #3498db;
 }
 
 .grammar-example {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 20px;
   border-radius: 12px;
-  margin: 25px 0;
+  margin: 20px 0;
+}
+
+.example-label {
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 10px;
 }
 
 .example-lojban {
@@ -85,6 +122,13 @@
 .example-english {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.grammar-next {
+  background: #e8f8f5;
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #27ae60;
 }
 
 .grammar-progress {

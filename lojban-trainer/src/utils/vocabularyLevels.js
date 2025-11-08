@@ -16,6 +16,21 @@ export const vocabularyLevels = [
       { template: '__ tavla', blank: 'do', english: 'You talk', hint: 'Use the word for "you"' },
     ],
     requiredXP: 0,
+    grammarTip: {
+      icon: '🎯',
+      title: 'Welcome to Lojban!',
+      whyItMatters: 'You just learned your first arguments (sumti). Unlike English where "it" is ambiguous, Lojban forces precision. This eliminates entire categories of bugs in specs, contracts, and human-AI communication.',
+      howItWorks: 'Pronouns are like variables: mi = I/me/we, do = you. They fill "argument slots" in predicates (coming next!). Think of them as function parameters.',
+      example: {
+        lojban: 'mi gleki',
+        english: 'I am happy'
+      },
+      nextUp: 'Pointing words (ti/ta/tu) - Lojban has DIFFERENT words for "this near me" vs "that far away". No more "which one?" confusion!',
+      progress: {
+        current: 1,
+        total: 8
+      }
+    }
   },
   {
     id: 2,
@@ -33,6 +48,21 @@ export const vocabularyLevels = [
       { template: 'mi prami __', blank: 'do', english: 'I love you', hint: 'Combine with previous level words' },
     ],
     requiredXP: 20,
+    grammarTip: {
+      icon: '👁️',
+      title: 'Explicit Distance = Zero Confusion',
+      whyItMatters: 'English "that" is ambiguous - which one? The one near you? Far away? In technical docs and specs, this causes endless confusion. Lojban has three words: ti (near me), ta (medium distance), tu (far away). Every reference is crystal clear.',
+      howItWorks: 'Distance demonstratives: ti = this (within reach), ta = that (across the room), tu = that (way over there). They work like mi/do but for pointing at objects.',
+      example: {
+        lojban: 'ti zdani',
+        english: 'This (near me) is a house'
+      },
+      nextUp: 'Predicates with place structure - Learn how Lojban predicates are like functions with fixed argument slots!',
+      progress: {
+        current: 2,
+        total: 8
+      }
+    }
   },
   {
     id: 3,
@@ -46,6 +76,21 @@ export const vocabularyLevels = [
       { lojban: 'nelci', english: 'like', category: 'emotions', places: ['x₁ likes x₂'], examples: ['mi nelci ti = I like this'] },
     ],
     requiredXP: 50,
+    grammarTip: {
+      icon: '⚙️',
+      title: 'Place Structure: Functions, Not Words',
+      whyItMatters: 'English "loves" can mean "John loves Mary" or "Mary loves John" - word order changes meaning. In Lojban, "prami" ALWAYS means x₁ loves x₂. This fixed structure is crucial for contracts, APIs, and formal logic where role confusion causes bugs.',
+      howItWorks: 'Each predicate (selbri) has numbered slots (places). "prami" = x₁ loves x₂. "gleki" = x₁ is happy (only 1 slot). Like function signatures: prami(lover, beloved), gleki(happy_one).',
+      example: {
+        lojban: 'mi prami do',
+        english: 'I love you (x₁=mi, x₂=do)'
+      },
+      nextUp: 'More actions and activities - practice with different place structures!',
+      progress: {
+        current: 3,
+        total: 8
+      }
+    }
   },
   {
     id: 4,
