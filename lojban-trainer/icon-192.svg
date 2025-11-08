@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg192" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="192" height="192" rx="32" fill="url(#bg192)"/>
+  <g transform="translate(96, 96)">
+    <path d="M -22.6 -30 L -22.6 30 L 7.5 30 A 30 30 0 0 0 7.5 -30 Z" fill="#4ecdc4" stroke="#fff" stroke-width="3"/>
+    <line x1="-37.5" y1="-15" x2="-22.6" y2="-15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-37.5" y1="15" x2="-22.6" y2="15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="26.3" y1="0" x2="41.3" y2="0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="-37.5" cy="-15" r="2.3" fill="#ffa502"/>
+    <circle cx="-37.5" cy="15" r="2.3" fill="#ffa502"/>
+    <circle cx="41.3" cy="0" r="2.3" fill="#ffa502"/>
+  </g>
+  <text x="96" y="165" font-family="monospace" font-size="22" font-weight="bold" fill="#fff" text-anchor="middle">lo</text>
+</svg>
