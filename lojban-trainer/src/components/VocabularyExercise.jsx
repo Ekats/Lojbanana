@@ -36,7 +36,14 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
   }, [word, exerciseType, levelId]);
 
   const handleTextSubmit = () => {
-    const correct = userAnswer.toLowerCase().trim() === word.english.toLowerCase().trim();
+    let correct;
+    if (exerciseType === 'fill-blank') {
+      // For fill-blank, compare to the blank answer
+      correct = userAnswer.trim().toLowerCase() === word.blank.toLowerCase();
+    } else {
+      // For translate exercises, compare to English translation
+      correct = userAnswer.toLowerCase().trim() === word.english.toLowerCase().trim();
+    }
     setIsCorrect(correct);
     setShowFeedback(true);
   };
