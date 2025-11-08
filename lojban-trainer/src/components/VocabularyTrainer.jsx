@@ -197,6 +197,7 @@ export default function VocabularyTrainer({ onExit }) {
           </div>
           <h1>{passed ? 'Great Work!' : 'Session Failed'}</h1>
           <p className="level-name">{currentLevel.name}</p>
+          <p className="total-xp-display">Total XP: {totalXP}</p>
 
           <div className="session-stats">
             <div className="stat">
@@ -218,9 +219,16 @@ export default function VocabularyTrainer({ onExit }) {
           </div>
 
           <div className="session-actions">
-            {isNextLevelUnlocked && (
-              <button onClick={() => handleSelectLevel(nextLevel)} className="btn-next-level">
-                Next Level: {nextLevel.icon} {nextLevel.name} →
+            {nextLevel && (
+              <button
+                onClick={() => handleSelectLevel(nextLevel)}
+                className={`btn-next-level ${!isNextLevelUnlocked ? 'locked' : ''}`}
+                disabled={!isNextLevelUnlocked}
+              >
+                {isNextLevelUnlocked
+                  ? `Next Level: ${nextLevel.icon} ${nextLevel.name} →`
+                  : `🔒 Next Level: ${nextLevel.icon} ${nextLevel.name} (${nextLevel.requiredXP} XP needed)`
+                }
               </button>
             )}
             <button onClick={() => startLevelSession(currentLevel)} className="btn-continue">
