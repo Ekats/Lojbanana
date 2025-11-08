@@ -440,6 +440,22 @@
   margin-top: 10px;
 }
 
+.feedback-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hotkey-hint {
+  font-size: 14px;
+  color: #27ae60;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid rgba(39, 174, 96, 0.3);
+}
+
 .btn-try-again {
   padding: 12px 30px;
   background: #e74c3c;
