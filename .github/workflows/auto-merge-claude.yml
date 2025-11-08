@@ -1,12 +1,21 @@
-name: Auto-merge Claude Branch to Master
+name: Auto-merge and Deploy
 
 on:
   push:
     branches:
       - 'claude/master-*'  # Triggers on any claude/master-* branch
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "deploy-${{ github.ref }}"
+  cancel-in-progress: false
+
 jobs:
-  merge:
+  merge-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,12 +37,36 @@ jobs:
           git merge --no-ff $BRANCH_NAME -m "Auto-merge $BRANCH_NAME to master"
           git push origin master
 
-      - name: Notify on success
-        if: success()
-        run: echo "✓ Successfully merged $BRANCH_NAME to master"
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: lojban-trainer/package-lock.json
 
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "✗ Failed to merge $BRANCH_NAME to master"
-          echo "There may be merge conflicts that need manual resolution"
+      - name: Install dependencies
+        working-directory: ./lojban-trainer
+        run: npm ci
+
+      - name: Build
+        working-directory: ./lojban-trainer
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./lojban-trainer/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: merge-and-build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
