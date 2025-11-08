@@ -300,16 +300,12 @@ Focus the app on building vocabulary systematically before moving to complex sen
 
 ## Known Issues
 
-### 🐛 Mobile: Start Button Leads to Empty Screen
+### ✅ FIXED: Mobile: Start Button Leads to Empty Screen
 **Reported by**: EEG_emperor
 **Platform**: Mobile
 **Description**: Clicking the start button on mobile leads to an empty screen
-**Status**: Needs investigation
-**Priority**: HIGH (blocks mobile users from using the app)
-
-**Debug checklist**:
-- [ ] Check if JavaScript errors occur on mobile
-- [ ] Verify routing works on mobile browsers
-- [ ] Test on multiple mobile browsers (Chrome, Safari, Firefox)
-- [ ] Check console logs for errors
-- [ ] Verify touch events vs click events
+**Status**: FIXED (2025-11-08)
+**Root Cause**: Review levels (6, 12) don't have a direct `words` property. They use `reviewLevels` to aggregate words from previous levels. The code was trying to access `level.words.length` which threw "Cannot read properties of undefined (reading 'length')".
+**Solution**: Updated LevelSelection.jsx to use `getWordsForLevel(level)` helper function instead of directly accessing `level.words`.
+**Fixed in**: commit 5084cf7
+**File**: lojban-trainer/src/components/LevelSelection.jsx:36,59
