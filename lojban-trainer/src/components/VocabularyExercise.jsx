@@ -98,29 +98,39 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
           <div className="flashcard-exercise">
             <div className="flashcard">
               <div className="flashcard-lojban">{word.lojban}</div>
-              <div className="flashcard-english">{word.english}</div>
-              {word.places && word.places.length > 0 && (
-                <div className="flashcard-places">
-                  {word.places.map((place, idx) => (
-                    <div key={idx} className="place-info">{place}</div>
-                  ))}
+              {!showFeedback ? (
+                <div className="flashcard-hidden">
+                  <button onClick={() => setShowFeedback(true)} className="btn-reveal">
+                    Show Answer
+                  </button>
                 </div>
+              ) : (
+                <>
+                  <div className="flashcard-english">{word.english}</div>
+                  {word.places && word.places.length > 0 && (
+                    <div className="flashcard-places">
+                      {word.places.map((place, idx) => (
+                        <div key={idx} className="place-info">{place}</div>
+                      ))}
+                    </div>
+                  )}
+                  {word.examples && (
+                    <div className="flashcard-examples">
+                      {word.examples.map((ex, idx) => (
+                        <div key={idx} className="example">{ex}</div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flashcard-actions">
+                    <button onClick={() => onComplete(true)} className="btn-got-it">
+                      Got it! ✓
+                    </button>
+                    <button onClick={() => onComplete(false)} className="btn-missed">
+                      Need practice
+                    </button>
+                  </div>
+                </>
               )}
-              {word.examples && (
-                <div className="flashcard-examples">
-                  {word.examples.map((ex, idx) => (
-                    <div key={idx} className="example">{ex}</div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="flashcard-actions">
-              <button onClick={() => onComplete(true)} className="btn-got-it">
-                Got it! ✓
-              </button>
-              <button onClick={() => onSkip()} className="btn-skip">
-                Skip
-              </button>
             </div>
           </div>
         );

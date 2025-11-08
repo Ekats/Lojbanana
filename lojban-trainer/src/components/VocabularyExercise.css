@@ -64,10 +64,38 @@
   font-style: italic;
 }
 
+.flashcard-hidden {
+  padding: 40px 0;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-reveal {
+  padding: 20px 60px;
+  background: #4ecdc4;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.btn-reveal:hover {
+  background: #3dbaae;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(78, 205, 196, 0.4);
+}
+
 .flashcard-actions {
   display: flex;
   gap: 15px;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .btn-got-it {
@@ -84,6 +112,23 @@
 
 .btn-got-it:hover {
   background: #229954;
+  transform: scale(1.05);
+}
+
+.btn-missed {
+  padding: 15px 40px;
+  background: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-missed:hover {
+  background: #d35400;
   transform: scale(1.05);
 }
 
