@@ -12,6 +12,14 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
   const [showPeek, setShowPeek] = useState(false);
 
   useEffect(() => {
+    // Reset state when moving to a new question
+    setShowFeedback(false);
+    setIsCorrect(null);
+    setSelectedOption(null);
+    setUserAnswer('');
+    setConstructedWords([]);
+    setShowPeek(false);
+
     if (exerciseType === 'multiple-choice-lojban' || exerciseType === 'multiple-choice-english') {
       const wrongAnswers = generateWrongAnswers(word, levelId, 3);
       const allOptions = [word, ...wrongAnswers];
@@ -25,7 +33,7 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
       const words = sentence.split(' ');
       setOptions([...words].sort(() => Math.random() - 0.5));
     }
-  }, [word, exerciseType]);
+  }, [word, exerciseType, levelId]);
 
   const handleTextSubmit = () => {
     const correct = userAnswer.toLowerCase().trim() === word.english.toLowerCase().trim();
