@@ -180,14 +180,15 @@ export default function VocabularyTrainer({ onExit }) {
   if (isSessionComplete) {
     const passed = lives > 0;
 
-    // Get current total XP including this session
+    // Get current progress
     const savedProgress = localStorage.getItem('vocab-progress');
-    const progress = savedProgress ? JSON.parse(savedProgress) : { totalXP: 0 };
+    const progress = savedProgress ? JSON.parse(savedProgress) : { totalXP: 0, levelProgress: {} };
     const totalXP = progress.totalXP || 0;
+    const levelProgress = progress.levelProgress || {};
 
     // Find next level
     const nextLevel = vocabularyLevels.find(level => level.id === currentLevel.id + 1);
-    const isNextLevelUnlocked = nextLevel && isLevelUnlocked(nextLevel.id, totalXP);
+    const isNextLevelUnlocked = nextLevel && isLevelUnlocked(nextLevel.id, levelProgress);
 
     return (
       <div className="vocabulary-trainer">
@@ -227,7 +228,7 @@ export default function VocabularyTrainer({ onExit }) {
               >
                 {isNextLevelUnlocked
                   ? `Next Level: ${nextLevel.icon} ${nextLevel.name} →`
-                  : `🔒 Next Level: ${nextLevel.icon} ${nextLevel.name} (${nextLevel.requiredXP} XP needed)`
+                  : `🔒 Next Level: ${nextLevel.icon} ${nextLevel.name} (Complete this level first)`
                 }
               </button>
             )}

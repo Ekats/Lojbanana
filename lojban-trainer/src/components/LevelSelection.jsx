@@ -21,11 +21,11 @@ export default function LevelSelection({ onSelectLevel, onExit }) {
   }, []);
 
   const getLevelStatus = (level) => {
-    const unlocked = isLevelUnlocked(level.id, totalXP);
+    const unlocked = isLevelUnlocked(level.id, levelProgress);
     const progress = levelProgress[level.id];
 
     if (!unlocked) {
-      return { status: 'locked', label: `🔒 ${level.requiredXP} XP needed` };
+      return { status: 'locked', label: `🔒 Complete previous level` };
     }
 
     if (progress && progress.completed) {
@@ -94,7 +94,7 @@ export default function LevelSelection({ onSelectLevel, onExit }) {
             </div>
             <div className="stat">
               <div className="stat-value">
-                {vocabularyLevels.filter(l => isLevelUnlocked(l.id, totalXP)).length}
+                {vocabularyLevels.filter(l => isLevelUnlocked(l.id, levelProgress)).length}
               </div>
               <div className="stat-label">Levels Unlocked</div>
             </div>

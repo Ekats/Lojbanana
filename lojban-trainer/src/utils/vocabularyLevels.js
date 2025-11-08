@@ -194,11 +194,17 @@ export function getLevelById(id) {
   return vocabularyLevels.find(level => level.id === id);
 }
 
-// Check if level is unlocked based on XP
-export function isLevelUnlocked(levelId, totalXP) {
+// Check if level is unlocked based on previous level completion
+export function isLevelUnlocked(levelId, levelProgress) {
   const level = getLevelById(levelId);
   if (!level) return false;
-  return totalXP >= level.requiredXP;
+
+  // Level 1 is always unlocked
+  if (levelId === 1) return true;
+
+  // Check if previous level is completed
+  const previousLevel = levelProgress[levelId - 1];
+  return previousLevel && previousLevel.completed;
 }
 
 // Get next locked level
