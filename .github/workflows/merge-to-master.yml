@@ -1,0 +1,32 @@
+name: Merge Claude Branch to Master
+
+on:
+  # Trigger manually from Actions tab
+  workflow_dispatch:
+    inputs:
+      claude_branch:
+        description: 'Claude branch to merge (e.g., claude/master-011CUuUHgpdQqogEkstFxD4Z)'
+        required: true
+        default: 'claude/master-011CUuUHgpdQqogEkstFxD4Z'
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge to master
+        run: |
+          git checkout master
+          git merge --no-ff ${{ github.event.inputs.claude_branch }} -m "Merge ${{ github.event.inputs.claude_branch }} to master"
+          git push origin master

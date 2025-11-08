@@ -1,0 +1,39 @@
+name: Auto-merge Claude Branch to Master
+
+on:
+  push:
+    branches:
+      - 'claude/master-*'  # Triggers on any claude/master-* branch
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge to master
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          git checkout master
+          git merge --no-ff $BRANCH_NAME -m "Auto-merge $BRANCH_NAME to master"
+          git push origin master
+
+      - name: Notify on success
+        if: success()
+        run: echo "✓ Successfully merged $BRANCH_NAME to master"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "✗ Failed to merge $BRANCH_NAME to master"
+          echo "There may be merge conflicts that need manual resolution"
