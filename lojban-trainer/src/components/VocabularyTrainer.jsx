@@ -29,13 +29,65 @@ export default function VocabularyTrainer({ onExit }) {
   };
 
   const startLevelSession = (level) => {
-    // Use all words from the level
+    // Build exercise sequence: interleave words with sentence practice
     const words = [...level.words];
+    const shuffledWords = words.sort(() => Math.random() - 0.5);
 
-    // Shuffle words
-    const shuffled = words.sort(() => Math.random() - 0.5);
+    // Create exercises array with words and their types
+    const exercises = [];
+    const types = [];
 
-    setSessionWords(shuffled);
+    const getExerciseType = (idx) => {
+      if (level.id <= 3) {
+        // Early levels: only multiple choice
+        const beginnerTypes = ['multiple-choice-english', 'multiple-choice-lojban'];
+        return beginnerTypes[idx % beginnerTypes.length];
+      } else if (level.id <= 6) {
+        // Mid levels: add text input
+        const midTypes = ['multiple-choice-english', 'multiple-choice-lojban', 'translate-to-english'];
+        return midTypes[Math.floor(Math.random() * midTypes.length)];
+      } else {
+        // Later levels: all exercise types
+        const allTypes = ['translate-to-english', 'multiple-choice-lojban', 'multiple-choice-english'];
+        return allTypes[Math.floor(Math.random() * allTypes.length)];
+      }
+    };
+
+    // Strategy: Learn half words, practice with sentences, learn rest, practice more
+    const halfPoint = Math.ceil(shuffledWords.length / 2);
+
+    // First half of words
+    shuffledWords.slice(0, halfPoint).forEach((word, idx) => {
+      exercises.push(word);
+      types.push(getExerciseType(idx));
+    });
+
+    // Add half of sentence exercises
+    if (level.sentences && level.sentences.length > 0) {
+      const halfSentences = Math.ceil(level.sentences.length / 2);
+      level.sentences.slice(0, halfSentences).forEach(sentence => {
+        exercises.push(sentence);
+        types.push('fill-blank');
+      });
+    }
+
+    // Second half of words
+    shuffledWords.slice(halfPoint).forEach((word, idx) => {
+      exercises.push(word);
+      types.push(getExerciseType(idx + halfPoint));
+    });
+
+    // Add remaining sentence exercises
+    if (level.sentences && level.sentences.length > 0) {
+      const halfSentences = Math.ceil(level.sentences.length / 2);
+      level.sentences.slice(halfSentences).forEach(sentence => {
+        exercises.push(sentence);
+        types.push('fill-blank');
+      });
+    }
+
+    setSessionWords(exercises);
+    setExerciseTypes(types);
     setCurrentIndex(0);
     setLives(3);
     setStreak(0);
@@ -45,36 +97,6 @@ export default function VocabularyTrainer({ onExit }) {
       totalXP: 0
     });
     setIsSessionComplete(false);
-
-    // Generate exercise types for each word
-    // Beginners get only multiple choice, advanced get more challenging exercises
-    const types = shuffled.map((word, idx) => {
-      if (level.id <= 3) {
-        // Early levels: only multiple choice (easier with peek button)
-        const beginnerTypes = [
-          'multiple-choice-english',
-          'multiple-choice-lojban',
-        ];
-        return beginnerTypes[idx % beginnerTypes.length];
-      } else if (level.id <= 6) {
-        // Mid levels: add text input
-        const midTypes = [
-          'multiple-choice-english',
-          'multiple-choice-lojban',
-          'translate-to-english',
-        ];
-        return midTypes[Math.floor(Math.random() * midTypes.length)];
-      } else {
-        // Later levels: all exercise types
-        const allTypes = [
-          'translate-to-english',
-          'multiple-choice-lojban',
-          'multiple-choice-english',
-        ];
-        return allTypes[Math.floor(Math.random() * allTypes.length)];
-      }
-    });
-    setExerciseTypes(types);
   };
 
   const handleExerciseComplete = (isCorrect) => {

@@ -282,6 +282,52 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
           </div>
         );
 
+      case 'fill-blank':
+        // word is actually a sentence object { template, blank, english, hint }
+        return (
+          <div className="fill-blank-exercise">
+            <div className="question">
+              <h3>Fill in the blank:</h3>
+              <div className="english-prompt">{word.english}</div>
+              {word.hint && <div className="hint-text">💡 {word.hint}</div>}
+            </div>
+            <div className="sentence-template">
+              {word.template.split('__').map((part, idx, arr) => (
+                <span key={idx}>
+                  {part}
+                  {idx < arr.length - 1 && (
+                    userAnswer ? (
+                      <span className="filled-blank">{userAnswer}</span>
+                    ) : (
+                      <span className="empty-blank">____</span>
+                    )
+                  )}
+                </span>
+              ))}
+            </div>
+            <input
+              type="text"
+              className="answer-input"
+              value={userAnswer}
+              onChange={(e) => setUserAnswer(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleTextSubmit()}
+              placeholder="Type the missing word..."
+              autoFocus
+            />
+            <button
+              onClick={() => {
+                const correct = userAnswer.trim().toLowerCase() === word.blank.toLowerCase();
+                setIsCorrect(correct);
+                setShowFeedback(true);
+              }}
+              className="btn-check"
+              disabled={!userAnswer.trim()}
+            >
+              Check
+            </button>
+          </div>
+        );
+
       default:
         return <div>Unknown exercise type</div>;
     }
@@ -298,7 +344,11 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
               <div className="feedback-icon">✓</div>
               <div className="feedback-text">
                 <strong>Correct!</strong>
-                <p>{word.lojban} = {word.english}</p>
+                {exerciseType === 'fill-blank' ? (
+                  <p>{word.template.replace('__', word.blank)} = {word.english}</p>
+                ) : (
+                  <p>{word.lojban} = {word.english}</p>
+                )}
               </div>
               <button onClick={() => onComplete(true)} className="btn-next">
                 Next →
@@ -309,9 +359,18 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
               <div className="feedback-icon">✗</div>
               <div className="feedback-text">
                 <strong>Not quite!</strong>
-                <p>The correct answer is: <strong>{word.lojban}</strong> = {word.english}</p>
-                {word.examples && (
-                  <p className="example">Example: {word.examples[0]}</p>
+                {exerciseType === 'fill-blank' ? (
+                  <>
+                    <p>The correct answer is: <strong>{word.blank}</strong></p>
+                    <p className="example">{word.template.replace('__', word.blank)} = {word.english}</p>
+                  </>
+                ) : (
+                  <>
+                    <p>The correct answer is: <strong>{word.lojban}</strong> = {word.english}</p>
+                    {word.examples && (
+                      <p className="example">Example: {word.examples[0]}</p>
+                    )}
+                  </>
                 )}
               </div>
               <button onClick={() => setShowFeedback(false)} className="btn-try-again">
