@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
+import GrammarCard from './GrammarCard';
 import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
@@ -19,6 +20,8 @@ export default function VocabularyTrainer({ onExit }) {
   const [isSessionComplete, setIsSessionComplete] = useState(false);
   const [exerciseTypes, setExerciseTypes] = useState([]);
   const [levelSelectionKey, setLevelSelectionKey] = useState(0);
+  const [showGrammarCard, setShowGrammarCard] = useState(false);
+  const [grammarTipToShow, setGrammarTipToShow] = useState(null);
 
   const handleSelectLevel = (levelId) => {
     const level = getLevelById(levelId);
@@ -152,7 +155,8 @@ export default function VocabularyTrainer({ onExit }) {
       totalXP: 0,
       streak: 0,
       sessionsCompleted: 0,
-      levelProgress: {}
+      levelProgress: {},
+      shownGrammarTips: []
     };
 
     if (completed) {
@@ -173,6 +177,14 @@ export default function VocabularyTrainer({ onExit }) {
       levelProg.wordsLearned = currentLevel.words.length;
       levelProg.completed = sessionStats.correct >= Math.floor(currentLevel.words.length * 0.7); // 70% to complete
 
+      // Check if we should show a grammar tip
+      if (!progress.shownGrammarTips) progress.shownGrammarTips = [];
+      if (currentLevel.grammarTip && !progress.shownGrammarTips.includes(currentLevel.id) && levelProg.completed) {
+        setGrammarTipToShow(currentLevel.grammarTip);
+        setShowGrammarCard(true);
+        progress.shownGrammarTips.push(currentLevel.id);
+      }
+
       localStorage.setItem('vocab-progress', JSON.stringify(progress));
     }
   };
@@ -181,6 +193,11 @@ export default function VocabularyTrainer({ onExit }) {
     setCurrentLevel(null);
     setIsSessionComplete(false);
     setLevelSelectionKey(prev => prev + 1); // Force LevelSelection to reload
+  };
+
+  const handleGrammarCardContinue = () => {
+    setShowGrammarCard(false);
+    setGrammarTipToShow(null);
   };
 
   // Show level selection if no level selected
@@ -315,6 +332,11 @@ export default function VocabularyTrainer({ onExit }) {
           onSkip={handleSkip}
         />
       </div>
+
+      {/* Grammar Card - shown after completing a level */}
+      {showGrammarCard && grammarTipToShow && (
+        <GrammarCard tip={grammarTipToShow} onContinue={handleGrammarCardContinue} />
+      )}
     </div>
   );
 }
