@@ -46,21 +46,26 @@ export default function VocabularyTrainer({ onExit }) {
     setIsSessionComplete(false);
 
     // Generate exercise types for each word
-    // Beginners get more flashcards, advanced get more challenging exercises
+    // Beginners get only multiple choice, advanced get more challenging exercises
     const types = shuffled.map((word, idx) => {
       if (level.id <= 3) {
-        // Early levels: more flashcards and multiple choice
+        // Early levels: only multiple choice (easier with peek button)
         const beginnerTypes = [
-          'flashcard',
-          'flashcard', // More flashcards
           'multiple-choice-english',
           'multiple-choice-lojban',
         ];
         return beginnerTypes[idx % beginnerTypes.length];
+      } else if (level.id <= 6) {
+        // Mid levels: add text input
+        const midTypes = [
+          'multiple-choice-english',
+          'multiple-choice-lojban',
+          'translate-to-english',
+        ];
+        return midTypes[Math.floor(Math.random() * midTypes.length)];
       } else {
-        // Later levels: mix of all types
+        // Later levels: all exercise types
         const allTypes = [
-          'flashcard',
           'translate-to-english',
           'multiple-choice-lojban',
           'multiple-choice-english',
