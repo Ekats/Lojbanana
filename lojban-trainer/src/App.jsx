@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import LessonList from './components/LessonList';
 import LessonView from './components/LessonView';
+import VocabularyTrainer from './components/VocabularyTrainer';
 import { getLessonById } from './lessons/lessons';
 import './App.css';
 
 function App() {
   const [currentLessonId, setCurrentLessonId] = useState(null);
+  const [showVocabulary, setShowVocabulary] = useState(false);
   const [progress, setProgress] = useState({});
 
   // Load progress from localStorage
@@ -33,6 +35,12 @@ function App() {
 
   const handleNavigateToHome = () => {
     setCurrentLessonId(null);
+    setShowVocabulary(false);
+  };
+
+  const handleStartVocabulary = () => {
+    setCurrentLessonId(null);
+    setShowVocabulary(true);
   };
 
   const handleProgress = (lessonId, exerciseIndex, answer) => {
@@ -63,12 +71,21 @@ function App() {
             <span className="current-lesson">{currentLesson.title}</span>
           </div>
         )}
+        {showVocabulary && (
+          <div className="breadcrumb">
+            <span className="separator">›</span>
+            <span className="current-lesson">Vocabulary Practice</span>
+          </div>
+        )}
       </nav>
 
       <main className="app-main">
-        {!currentLesson ? (
+        {showVocabulary ? (
+          <VocabularyTrainer onExit={handleNavigateToHome} />
+        ) : !currentLesson ? (
           <LessonList
             onSelectLesson={handleSelectLesson}
+            onStartVocabulary={handleStartVocabulary}
             progress={progress}
           />
         ) : (

@@ -1,7 +1,7 @@
 import { lessons } from '../lessons/lessons';
 import './LessonList.css';
 
-export default function LessonList({ onSelectLesson, progress }) {
+export default function LessonList({ onSelectLesson, onStartVocabulary, progress }) {
   const getLessonProgress = (lessonId) => {
     if (!progress || !progress[lessonId]) {
       return 0;
@@ -59,6 +59,25 @@ export default function LessonList({ onSelectLesson, progress }) {
               <strong>First-Order Logic</strong>
               <p>Express formal logic in natural speech</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="vocabulary-section">
+        <div className="vocab-banner" onClick={onStartVocabulary}>
+          <div className="vocab-icon">📚</div>
+          <div className="vocab-content">
+            <h2>Vocabulary Practice</h2>
+            <p>Learn words through Duolingo-style exercises</p>
+            <div className="vocab-features">
+              <span>✓ Flashcards</span>
+              <span>✓ Multiple Choice</span>
+              <span>✓ Sentence Building</span>
+              <span>✓ Track Progress</span>
+            </div>
+          </div>
+          <div className="vocab-action">
+            <button className="btn-practice">Start Practice →</button>
           </div>
         </div>
       </div>
