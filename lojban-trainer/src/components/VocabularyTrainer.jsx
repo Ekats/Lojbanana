@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
-import { getLevelById } from '../utils/vocabularyLevels';
+import { getLevelById, vocabularyLevels, isLevelUnlocked } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
 export default function VocabularyTrainer({ onExit }) {
@@ -177,6 +177,16 @@ export default function VocabularyTrainer({ onExit }) {
 
   if (isSessionComplete) {
     const passed = lives > 0;
+
+    // Get current total XP including this session
+    const savedProgress = localStorage.getItem('vocab-progress');
+    const progress = savedProgress ? JSON.parse(savedProgress) : { totalXP: 0 };
+    const totalXP = progress.totalXP || 0;
+
+    // Find next level
+    const nextLevel = vocabularyLevels.find(level => level.id === currentLevel.id + 1);
+    const isNextLevelUnlocked = nextLevel && isLevelUnlocked(nextLevel.id, totalXP);
+
     return (
       <div className="vocabulary-trainer">
         <div className="session-complete">
@@ -206,6 +216,11 @@ export default function VocabularyTrainer({ onExit }) {
           </div>
 
           <div className="session-actions">
+            {isNextLevelUnlocked && (
+              <button onClick={() => handleSelectLevel(nextLevel)} className="btn-next-level">
+                Next Level: {nextLevel.icon} {nextLevel.name} →
+              </button>
+            )}
             <button onClick={() => startLevelSession(currentLevel)} className="btn-continue">
               Practice Again
             </button>
