@@ -28,15 +28,15 @@ export default function LessonList({ onSelectLesson, onStartVocabulary, progress
           but as a <strong>speakable formal logic system</strong>.
         </p>
         <p>
-          Think of it like learning programming: predicates are functions,
-          arguments are parameters, and logical connectives are boolean operators.
+          Think of it like learning programming: predicates are relations (like database tables),
+          arguments fill numbered slots, and logical connectives are boolean operators.
         </p>
         <div className="features">
           <div className="feature">
             <span className="feature-icon">🎯</span>
             <div>
-              <strong>Zero Ambiguity</strong>
-              <p>Every sentence has exactly one parse</p>
+              <strong>Fixed Place Structures</strong>
+              <p>Every predicate has numbered, unambiguous argument slots</p>
             </div>
           </div>
           <div className="feature">

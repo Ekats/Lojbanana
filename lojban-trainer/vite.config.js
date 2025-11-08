@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: 'Lojban Logic Trainer',
         short_name: 'Lojban Trainer',
-        description: 'Learn Lojban as a formal logic system - predicates as functions, arguments as parameters, logic as boolean operators',
+        description: 'Learn Lojban as a formal logic system - predicates as relations, arguments fill numbered slots, logic as boolean operators',
         theme_color: '#4ecdc4',
         background_color: '#f5f6fa',
         display: 'standalone',
