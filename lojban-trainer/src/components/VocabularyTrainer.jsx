@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
-import { getLevelById, vocabularyLevels, isLevelUnlocked } from '../utils/vocabularyLevels';
+import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
 export default function VocabularyTrainer({ onExit }) {
@@ -62,10 +62,11 @@ export default function VocabularyTrainer({ onExit }) {
       types.push(getExerciseType(idx));
     });
 
-    // Add half of sentence exercises
-    if (level.sentences && level.sentences.length > 0) {
-      const halfSentences = Math.ceil(level.sentences.length / 2);
-      level.sentences.slice(0, halfSentences).forEach(sentence => {
+    // Generate and add sentence exercises dynamically
+    const generatedSentences = generateSentences(level.id, 6);
+    if (generatedSentences.length > 0) {
+      const halfSentences = Math.ceil(generatedSentences.length / 2);
+      generatedSentences.slice(0, halfSentences).forEach(sentence => {
         exercises.push(sentence);
         types.push('fill-blank');
       });
@@ -78,9 +79,9 @@ export default function VocabularyTrainer({ onExit }) {
     });
 
     // Add remaining sentence exercises
-    if (level.sentences && level.sentences.length > 0) {
-      const halfSentences = Math.ceil(level.sentences.length / 2);
-      level.sentences.slice(halfSentences).forEach(sentence => {
+    if (generatedSentences.length > 0) {
+      const halfSentences = Math.ceil(generatedSentences.length / 2);
+      generatedSentences.slice(halfSentences).forEach(sentence => {
         exercises.push(sentence);
         types.push('fill-blank');
       });
