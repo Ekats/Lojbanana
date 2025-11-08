@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { vocabularyLevels, isLevelUnlocked } from '../utils/vocabularyLevels';
+import { vocabularyLevels, isLevelUnlocked, getWordsForLevel } from '../utils/vocabularyLevels';
 import './LevelSelection.css';
 
 export default function LevelSelection({ onSelectLevel, onExit }) {
@@ -33,7 +33,8 @@ export default function LevelSelection({ onSelectLevel, onExit }) {
     }
 
     if (progress && progress.wordsLearned > 0) {
-      const percent = Math.round((progress.wordsLearned / level.words.length) * 100);
+      const words = getWordsForLevel(level);
+      const percent = Math.round((progress.wordsLearned / words.length) * 100);
       return { status: 'in-progress', label: `${percent}% complete` };
     }
 
@@ -55,6 +56,7 @@ export default function LevelSelection({ onSelectLevel, onExit }) {
         {vocabularyLevels.map((level) => {
           const { status, label } = getLevelStatus(level);
           const unlocked = status !== 'locked';
+          const words = getWordsForLevel(level);
 
           return (
             <div
@@ -71,7 +73,7 @@ export default function LevelSelection({ onSelectLevel, onExit }) {
                 </div>
                 <p className="level-description">{level.description}</p>
                 <div className="level-meta">
-                  <span className="word-count">{level.words.length} words</span>
+                  <span className="word-count">{words.length} words</span>
                   <span className="level-status-label">{label}</span>
                 </div>
               </div>
