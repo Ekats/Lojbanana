@@ -245,7 +245,7 @@ export default function VocabularyTrainer({ onExit }) {
           <div className="session-actions">
             {nextLevel && (
               <button
-                onClick={() => handleSelectLevel(nextLevel)}
+                onClick={() => handleSelectLevel(nextLevel.id)}
                 className={`btn-next-level ${!isNextLevelUnlocked ? 'locked' : ''}`}
                 disabled={!isNextLevelUnlocked}
               >
