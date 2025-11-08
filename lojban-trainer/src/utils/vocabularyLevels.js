@@ -360,7 +360,7 @@ export function generateSentences(currentLevelId, count = 3) {
   for (let i = 1; i <= currentLevelId; i++) {
     const level = getLevelById(i);
     if (level) {
-      learnedWords.push(...level.words);
+      learnedWords.push(...getWordsForLevel(level));
     }
   }
 
@@ -461,7 +461,7 @@ export function generateWrongAnswers(word, levelId, count = 3) {
     Math.abs(l.id - levelId) <= 1
   );
 
-  const allWords = adjacentLevels.flatMap(l => l.words);
+  const allWords = adjacentLevels.flatMap(l => getWordsForLevel(l));
   const wrongWords = allWords.filter(w => w.lojban !== word.lojban);
 
   // Shuffle and take count
