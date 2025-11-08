@@ -129,6 +129,23 @@ export const vocabularyLevels = [
   },
   {
     id: 6,
+    name: "📚 Review: Basics",
+    description: "Review everything you've learned",
+    icon: "🔄",
+    isReview: true,
+    reviewLevels: [1, 2, 3, 4, 5], // Pull words from these levels
+    requiredXP: 170,
+    grammarTips: [
+      {
+        showAfterExercise: 5,
+        icon: '🧠',
+        title: 'Spaced Repetition',
+        content: 'Reviewing old material strengthens memory. You\'ll see review levels periodically to keep skills sharp.',
+      }
+    ]
+  },
+  {
+    id: 7,
     name: "Food & Drink",
     description: "Things to eat and drink",
     icon: "🍎",
@@ -138,10 +155,10 @@ export const vocabularyLevels = [
       { lojban: 'nanba', english: 'bread', category: 'things', places: ['x₁ is bread'], examples: ['lo nanba = bread'] },
       { lojban: 'ladru', english: 'milk', category: 'things', places: ['x₁ is milk'], examples: ['lo ladru = milk'] },
     ],
-    requiredXP: 170,
+    requiredXP: 190,
   },
   {
-    id: 7,
+    id: 8,
     name: "People",
     description: "Describe people",
     icon: "👥",
@@ -151,10 +168,10 @@ export const vocabularyLevels = [
       { lojban: 'ninmu', english: 'woman, female', category: 'things', places: ['x₁ is a woman'], examples: ['lo ninmu = a woman'] },
       { lojban: 'verba', english: 'child', category: 'things', places: ['x₁ is a child'], examples: ['lo verba = a child'] },
     ],
-    requiredXP: 210,
+    requiredXP: 230,
   },
   {
-    id: 8,
+    id: 9,
     name: "Places",
     description: "Locations and buildings",
     icon: "🏠",
@@ -164,10 +181,10 @@ export const vocabularyLevels = [
       { lojban: 'zarci', english: 'market, store', category: 'things', places: ['x₁ is a market'], examples: ['lo zarci = a market'] },
       { lojban: 'gusta', english: 'restaurant', category: 'things', places: ['x₁ is a restaurant'], examples: ['lo gusta = a restaurant'] },
     ],
-    requiredXP: 250,
+    requiredXP: 270,
   },
   {
-    id: 9,
+    id: 10,
     name: "More Actions",
     description: "More things you can do",
     icon: "🚶",
@@ -177,10 +194,10 @@ export const vocabularyLevels = [
       { lojban: 'dansu', english: 'dance', category: 'actions', places: ['x₁ dances'], examples: ['mi dansu = I dance'] },
       { lojban: 'kelci', english: 'play', category: 'actions', places: ['x₁ plays'], examples: ['mi kelci = I play'] },
     ],
-    requiredXP: 290,
+    requiredXP: 310,
   },
   {
-    id: 10,
+    id: 11,
     name: "Descriptions",
     description: "Describe things",
     icon: "⭐",
@@ -191,20 +208,37 @@ export const vocabularyLevels = [
       { lojban: 'mabla', english: 'bad', category: 'properties', places: ['x₁ is bad'], examples: ['ta mabla = that is bad'] },
       { lojban: 'melbi', english: 'beautiful', category: 'properties', places: ['x₁ is beautiful'], examples: ['ti melbi = this is beautiful'] },
     ],
-    requiredXP: 330,
+    requiredXP: 350,
   },
   {
-    id: 11,
+    id: 12,
+    name: "📚 Review: Vocabulary",
+    description: "Review all vocabulary learned",
+    icon: "🔄",
+    isReview: true,
+    reviewLevels: [1, 2, 3, 4, 5, 7, 8, 9, 10, 11], // Skip review level 6
+    requiredXP: 400,
+    grammarTips: [
+      {
+        showAfterExercise: 8,
+        icon: '💪',
+        title: 'Building Fluency',
+        content: 'Practice makes permanent. Regular review sessions help move knowledge from short-term to long-term memory.',
+      }
+    ]
+  },
+  {
+    id: 13,
     name: "Structure 1",
     description: "The separator word",
     icon: "🔧",
     words: [
       { lojban: 'cu', english: '[separator]', category: 'structure', examples: ['mi cu tavla = I talk'] },
     ],
-    requiredXP: 380,
+    requiredXP: 440,
   },
   {
-    id: 12,
+    id: 14,
     name: "Structure 2",
     description: "Articles: a/the",
     icon: "📝",
@@ -213,10 +247,10 @@ export const vocabularyLevels = [
       { lojban: 'le', english: 'the (specific)', category: 'structure', examples: ['le mlatu = the cat'] },
       { lojban: 'la', english: 'named', category: 'structure', examples: ['la .djan. = John'] },
     ],
-    requiredXP: 400,
+    requiredXP: 480,
   },
   {
-    id: 13,
+    id: 15,
     name: "Logic: AND",
     description: "Connect with AND",
     icon: "🔗",
@@ -224,10 +258,10 @@ export const vocabularyLevels = [
       { lojban: 'je', english: 'and (for verbs)', category: 'connectives', examples: ['gleki je nelci = happy and likes'] },
       { lojban: '.e', english: 'and (for things)', category: 'connectives', examples: ['mi .e do = I and you'] },
     ],
-    requiredXP: 440,
+    requiredXP: 520,
   },
   {
-    id: 14,
+    id: 16,
     name: "Logic: OR",
     description: "Connect with OR",
     icon: "🔀",
@@ -235,10 +269,10 @@ export const vocabularyLevels = [
       { lojban: 'ja', english: 'or (for verbs)', category: 'connectives', examples: ['gleki ja badri = happy or sad'] },
       { lojban: '.a', english: 'or (for things)', category: 'connectives', examples: ['mi .a do = I or you'] },
     ],
-    requiredXP: 480,
+    requiredXP: 560,
   },
   {
-    id: 15,
+    id: 17,
     name: "Thinking",
     description: "Mental actions",
     icon: "💭",
@@ -248,9 +282,25 @@ export const vocabularyLevels = [
       { lojban: 'cusku', english: 'say, express', category: 'cognition', places: ['x₁ says x₂'], examples: ['mi cusku = I say'] },
       { lojban: 'jimpe', english: 'understand', category: 'cognition', places: ['x₁ understands x₂'], examples: ['mi jimpe = I understand'] },
     ],
-    requiredXP: 520,
+    requiredXP: 600,
   },
 ];
+
+// Helper function to get words for a level (including review levels)
+export function getWordsForLevel(level) {
+  if (level.isReview && level.reviewLevels) {
+    // Collect all words from the specified levels
+    const allWords = [];
+    level.reviewLevels.forEach(levelId => {
+      const reviewLevel = getLevelById(levelId);
+      if (reviewLevel && reviewLevel.words) {
+        allWords.push(...reviewLevel.words);
+      }
+    });
+    return allWords;
+  }
+  return level.words || [];
+}
 
 // Get level by ID
 export function getLevelById(id) {
