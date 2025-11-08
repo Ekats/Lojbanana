@@ -11,6 +11,18 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
   const [constructedWords, setConstructedWords] = useState([]);
   const [showPeek, setShowPeek] = useState(false);
 
+  // Handle keyboard shortcuts for Next button
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (showFeedback && isCorrect && e.key === 'Enter') {
+        onComplete(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [showFeedback, isCorrect, onComplete]);
+
   useEffect(() => {
     // Reset state when moving to a new question
     setShowFeedback(false);
@@ -357,9 +369,12 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
                   <p>{word.lojban} = {word.english}</p>
                 )}
               </div>
-              <button onClick={() => onComplete(true)} className="btn-next">
-                Next →
-              </button>
+              <div className="feedback-actions">
+                <button onClick={() => onComplete(true)} className="btn-next">
+                  Next →
+                </button>
+                <span className="hotkey-hint">Press Enter ⏎</span>
+              </div>
             </>
           ) : (
             <>
