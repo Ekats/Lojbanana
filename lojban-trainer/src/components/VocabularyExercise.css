@@ -456,6 +456,25 @@
   background: #c0392b;
 }
 
+.btn-next {
+  padding: 15px 50px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.btn-next:hover {
+  background: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+}
+
 /* Peek Button */
 .btn-peek {
   padding: 10px 24px;

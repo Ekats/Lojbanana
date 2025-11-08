@@ -39,12 +39,6 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
     const correct = userAnswer.toLowerCase().trim() === word.english.toLowerCase().trim();
     setIsCorrect(correct);
     setShowFeedback(true);
-
-    if (correct) {
-      setTimeout(() => {
-        onComplete(true);
-      }, 1500);
-    }
   };
 
   const handleMultipleChoice = (option) => {
@@ -52,12 +46,6 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
     const correct = option.lojban === word.lojban;
     setIsCorrect(correct);
     setShowFeedback(true);
-
-    if (correct) {
-      setTimeout(() => {
-        onComplete(true);
-      }, 1500);
-    }
   };
 
   const handleConstructWord = (wordToAdd) => {
@@ -76,12 +64,6 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
     const correct = userSentence === correctSentence;
     setIsCorrect(correct);
     setShowFeedback(true);
-
-    if (correct) {
-      setTimeout(() => {
-        onComplete(true);
-      }, 1500);
-    }
   };
 
   const handlePeek = () => {
@@ -318,6 +300,9 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
                 <strong>Correct!</strong>
                 <p>{word.lojban} = {word.english}</p>
               </div>
+              <button onClick={() => onComplete(true)} className="btn-next">
+                Next →
+              </button>
             </>
           ) : (
             <>
