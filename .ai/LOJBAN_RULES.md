@@ -253,3 +253,59 @@ Before adding a generated sentence, check:
 ---
 
 **Remember: Lojban predicates are RELATIONS (sets of tuples), not FUNCTIONS (one-to-one mappings)!**
+
+---
+
+## Technical Definition: Predicates and Relations
+
+### Formal Definition (korvo):
+> A predicate, very technically, is something like a function X × Y → 2 which maps pairs of elements of X and Y to the Booleans: yes or no. Conceptually, a relation has a predicate, called its characteristic function.
+
+### How This Relates to Lojban:
+- A bridi like `{da mlatu de}` can be seen as having a selbri `{mlatu}` which relates two objects `{da}` and `{de}`
+- This is like an untyped version of set theory
+- Whether `{da mlatu de}` is true → that's the **predicate** (the characteristic function)
+- `{mlatu}` itself → that's the **relation**
+
+In other words:
+- **Relation**: The selbri (e.g., `mlatu`, `prami`) - the set of valid tuples
+- **Predicate**: The truth function that tells you whether a specific tuple is in that relation
+
+---
+
+## Development Guidelines
+
+### ⚠️ CRITICAL: LLM Reliability for Lojban
+
+**LLMs (including Claude) are unreliable for Lojban grammar and translations!**
+
+- Do NOT trust AI-generated Lojban without verification
+- Grammar explanations should be written/verified by humans with Lojban knowledge
+- Sentence generation must follow the strict rules documented above
+- LLMs can help with code structure, but NOT with Lojban content
+- When in doubt about Lojban grammar, ask the community
+
+**Exception**: Some users have had success using LLMs as assistants for translations, but always verify the output.
+
+### Code vs. Content:
+- ✅ Use AI for: Python/JavaScript code, app structure, UI logic
+- ❌ Don't rely on AI for: Lojban grammar rules, sentence correctness, word definitions
+
+### Learning Curve Note:
+"Lojban learning is usually limited by vocabulary; it will take a few weeks for you to get enough vocabulary to feel comfortable reading basic sentences." - korvo
+
+Focus the app on building vocabulary systematically before moving to complex sentences.
+
+---
+
+## Known Issues
+
+### ✅ FIXED: Mobile: Start Button Leads to Empty Screen
+**Reported by**: EEG_emperor
+**Platform**: Mobile
+**Description**: Clicking the start button on mobile leads to an empty screen
+**Status**: FIXED (2025-11-08)
+**Root Cause**: Review levels (6, 12) don't have a direct `words` property. They use `reviewLevels` to aggregate words from previous levels. The code was trying to access `level.words.length` which threw "Cannot read properties of undefined (reading 'length')".
+**Solution**: Updated LevelSelection.jsx to use `getWordsForLevel(level)` helper function instead of directly accessing `level.words`.
+**Fixed in**: commit 5084cf7
+**File**: lojban-trainer/src/components/LevelSelection.jsx:36,59
