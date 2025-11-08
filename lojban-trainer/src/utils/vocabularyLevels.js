@@ -20,14 +20,14 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 2,
         icon: '💪',
-        title: 'Why Pronouns Matter',
-        content: 'Unlike English "it" (which is ambiguous), Lojban has precise words. Zero ambiguity = fewer bugs in specs.',
+        title: 'Arguments = Function Parameters',
+        content: 'In Lojban, pronouns fill argument slots in predicates. Think: function(mi, do) instead of loose words.',
       },
       {
         showAfterExercise: 4,
-        icon: '📖',
-        title: 'Think: Function Parameters',
-        content: 'Pronouns (mi, do) are like variables that fill "slots" in predicates. More on that next level!',
+        icon: '🎯',
+        title: 'Building Blocks',
+        content: 'These basic pronouns combine with predicates to make complete statements. Coming up: words for pointing!',
         example: {
           lojban: 'mi gleki',
           english: 'I am happy'
@@ -55,8 +55,8 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 3,
         icon: '👁️',
-        title: 'Three Words for "That"',
-        content: 'English "that" is vague - which one? Lojban has ti (near), ta (medium), tu (far). Every reference is precise.',
+        title: 'Distance Markers',
+        content: 'When pointing at objects, ti/ta/tu mark distance: near/medium/far. Helps clarify "which thing?" when gesturing.',
         example: {
           lojban: 'ti zdani',
           english: 'This (near me) is a house'
@@ -64,9 +64,9 @@ export const vocabularyLevels = [
       },
       {
         showAfterExercise: 6,
-        icon: '🎯',
-        title: 'Zero Confusion',
-        content: 'In technical docs, ambiguous references cause bugs. Lojban\'s explicit distance = crystal clear communication.',
+        icon: '📍',
+        title: 'Physical Reference',
+        content: 'Useful for specs and instructions involving physical objects - "use this screw" vs "use that screw (far away)".',
       }
     ]
   },
@@ -86,8 +86,8 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 3,
         icon: '⚙️',
-        title: 'Place Structure = Fixed Roles',
-        content: 'English: "John loves Mary" vs "Mary loves John" - word order matters. Lojban: "prami" ALWAYS means x₁ loves x₂. No confusion.',
+        title: 'Fixed Argument Positions',
+        content: '"prami" always means x₁ loves x₂. Unlike English where "John loves Mary" changes meaning if you swap names.',
         example: {
           lojban: 'mi prami do',
           english: 'I love you (x₁=mi, x₂=do)'
@@ -96,8 +96,8 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 6,
         icon: '📦',
-        title: 'Like Function Signatures',
-        content: 'Think: prami(lover, beloved), gleki(happy_one). Numbered slots prevent role confusion in contracts and APIs.',
+        title: 'Like Function Calls',
+        content: 'Think: prami(lover, beloved), gleki(happy_one). Fixed positions help when precision matters.',
       }
     ]
   },
