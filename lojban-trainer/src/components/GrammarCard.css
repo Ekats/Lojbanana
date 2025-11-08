@@ -23,9 +23,9 @@
 
 .grammar-card {
   background: white;
-  border-radius: 20px;
-  padding: 40px;
-  max-width: 500px;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 450px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.3s ease;
@@ -49,93 +49,41 @@
 }
 
 .grammar-title {
-  font-size: 28px;
+  font-size: 22px;
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   font-weight: bold;
 }
 
-.grammar-why,
-.grammar-how,
-.grammar-next {
-  text-align: left;
+.grammar-content {
   margin-bottom: 20px;
 }
 
-.why-label,
-.how-label,
-.next-label,
-.example-label {
-  font-size: 14px;
-  font-weight: bold;
-  color: #7f8c8d;
-  margin-bottom: 8px;
-}
-
-.grammar-why p,
-.grammar-how p,
-.grammar-next p {
-  font-size: 15px;
+.grammar-content p {
+  font-size: 16px;
   color: #34495e;
   line-height: 1.6;
   margin: 0;
 }
 
-.grammar-why {
-  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 4px solid #f39c12;
-}
-
-.grammar-why .why-label {
-  color: #d35400;
-}
-
-.grammar-how {
-  background: #f0f8ff;
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 4px solid #3498db;
-}
-
 .grammar-example {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  padding: 18px;
   border-radius: 12px;
   margin: 20px 0;
 }
 
-.example-label {
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 10px;
-}
-
 .example-lojban {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
   font-family: 'Courier New', monospace;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .example-english {
-  font-size: 16px;
+  font-size: 15px;
   color: rgba(255, 255, 255, 0.9);
-}
-
-.grammar-next {
-  background: #e8f8f5;
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 4px solid #27ae60;
-}
-
-.grammar-progress {
-  font-size: 14px;
-  color: #7f8c8d;
-  margin: 20px 0 25px;
-  font-weight: 600;
 }
 
 .btn-grammar-continue {

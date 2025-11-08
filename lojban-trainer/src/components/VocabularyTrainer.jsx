@@ -22,6 +22,7 @@ export default function VocabularyTrainer({ onExit }) {
   const [levelSelectionKey, setLevelSelectionKey] = useState(0);
   const [showGrammarCard, setShowGrammarCard] = useState(false);
   const [grammarTipToShow, setGrammarTipToShow] = useState(null);
+  const [tipsShownThisSession, setTipsShownThisSession] = useState([]);
 
   const handleSelectLevel = (levelId) => {
     const level = getLevelById(levelId);
@@ -101,6 +102,7 @@ export default function VocabularyTrainer({ onExit }) {
       totalXP: 0
     });
     setIsSessionComplete(false);
+    setTipsShownThisSession([]); // Reset tips for new session
   };
 
   const handleExerciseComplete = (isCorrect) => {
@@ -125,6 +127,21 @@ export default function VocabularyTrainer({ onExit }) {
         // Session failed
         endSession(false);
         return;
+      }
+    }
+
+    // Check if we should show a grammar tip after this exercise
+    const exerciseNumber = currentIndex + 1;
+    if (currentLevel.grammarTips) {
+      const tipToShow = currentLevel.grammarTips.find(
+        tip => tip.showAfterExercise === exerciseNumber && !tipsShownThisSession.includes(tip.showAfterExercise)
+      );
+
+      if (tipToShow) {
+        setGrammarTipToShow(tipToShow);
+        setShowGrammarCard(true);
+        setTipsShownThisSession([...tipsShownThisSession, tipToShow.showAfterExercise]);
+        return; // Don't advance yet, will advance when they dismiss the tip
       }
     }
 
@@ -155,8 +172,7 @@ export default function VocabularyTrainer({ onExit }) {
       totalXP: 0,
       streak: 0,
       sessionsCompleted: 0,
-      levelProgress: {},
-      shownGrammarTips: []
+      levelProgress: {}
     };
 
     if (completed) {
@@ -177,14 +193,6 @@ export default function VocabularyTrainer({ onExit }) {
       levelProg.wordsLearned = currentLevel.words.length;
       levelProg.completed = sessionStats.correct >= Math.floor(currentLevel.words.length * 0.7); // 70% to complete
 
-      // Check if we should show a grammar tip
-      if (!progress.shownGrammarTips) progress.shownGrammarTips = [];
-      if (currentLevel.grammarTip && !progress.shownGrammarTips.includes(currentLevel.id) && levelProg.completed) {
-        setGrammarTipToShow(currentLevel.grammarTip);
-        setShowGrammarCard(true);
-        progress.shownGrammarTips.push(currentLevel.id);
-      }
-
       localStorage.setItem('vocab-progress', JSON.stringify(progress));
     }
   };
@@ -198,6 +206,14 @@ export default function VocabularyTrainer({ onExit }) {
   const handleGrammarCardContinue = () => {
     setShowGrammarCard(false);
     setGrammarTipToShow(null);
+
+    // Now advance to next exercise
+    if (currentIndex < sessionWords.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // Session complete!
+      endSession(true);
+    }
   };
 
   // Show level selection if no level selected
