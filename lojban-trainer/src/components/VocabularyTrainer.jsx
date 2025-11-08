@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
 import GrammarCard from './GrammarCard';
-import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences } from '../utils/vocabularyLevels';
+import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences, getWordsForLevel } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
 export default function VocabularyTrainer({ onExit }) {
@@ -34,7 +34,7 @@ export default function VocabularyTrainer({ onExit }) {
 
   const startLevelSession = (level) => {
     // Build exercise sequence: interleave words with sentence practice
-    const words = [...level.words];
+    const words = [...getWordsForLevel(level)];
     const shuffledWords = words.sort(() => Math.random() - 0.5);
 
     // Create exercises array with words and their types
@@ -190,8 +190,9 @@ export default function VocabularyTrainer({ onExit }) {
       }
 
       const levelProg = progress.levelProgress[currentLevel.id];
-      levelProg.wordsLearned = currentLevel.words.length;
-      levelProg.completed = sessionStats.correct >= Math.floor(currentLevel.words.length * 0.7); // 70% to complete
+      const wordCount = getWordsForLevel(currentLevel).length;
+      levelProg.wordsLearned = wordCount;
+      levelProg.completed = sessionStats.correct >= Math.floor(wordCount * 0.7); // 70% to complete
 
       localStorage.setItem('vocab-progress', JSON.stringify(progress));
     }
