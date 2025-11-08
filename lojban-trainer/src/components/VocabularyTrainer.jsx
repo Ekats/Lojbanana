@@ -18,6 +18,7 @@ export default function VocabularyTrainer({ onExit }) {
   });
   const [isSessionComplete, setIsSessionComplete] = useState(false);
   const [exerciseTypes, setExerciseTypes] = useState([]);
+  const [levelSelectionKey, setLevelSelectionKey] = useState(0);
 
   const handleSelectLevel = (levelId) => {
     const level = getLevelById(levelId);
@@ -156,11 +157,12 @@ export default function VocabularyTrainer({ onExit }) {
   const handleBackToLevels = () => {
     setCurrentLevel(null);
     setIsSessionComplete(false);
+    setLevelSelectionKey(prev => prev + 1); // Force LevelSelection to reload
   };
 
   // Show level selection if no level selected
   if (!currentLevel) {
-    return <LevelSelection onSelectLevel={handleSelectLevel} onExit={onExit} />;
+    return <LevelSelection key={levelSelectionKey} onSelectLevel={handleSelectLevel} onExit={onExit} />;
   }
 
   const currentWord = sessionWords[currentIndex];
