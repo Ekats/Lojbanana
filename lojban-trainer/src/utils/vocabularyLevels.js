@@ -226,6 +226,29 @@ export function getUnlockedLevels(totalXP) {
   return vocabularyLevels.filter(level => totalXP >= level.requiredXP);
 }
 
+// Helper function to get correct copula (am/is/are) for English subject
+function getCopula(subject) {
+  const sub = subject.toLowerCase();
+  if (sub === 'i' || sub === 'me') return 'am';
+  if (sub === 'you' || sub === 'we') return 'are';
+  return 'is'; // for this, that, he, she, it, etc.
+}
+
+// Helper function to conjugate verbs for English subject
+function conjugateVerb(verb, subject) {
+  const sub = subject.toLowerCase();
+  const baseVerb = verb.split(',')[0].trim();
+
+  // For third person singular (this, that), add 's' if needed
+  if (sub === 'this' || sub === 'that') {
+    // Check if verb already ends in appropriate form
+    if (!baseVerb.endsWith('s') && !baseVerb.endsWith('es')) {
+      return baseVerb + 's';
+    }
+  }
+  return baseVerb;
+}
+
 // Generate sentences from learned words based on Lojban grammar
 export function generateSentences(currentLevelId, count = 3) {
   // Get all words learned up to current level
@@ -251,18 +274,37 @@ export function generateSentences(currentLevelId, count = 3) {
   while (sentences.length < count && sentences.length < selbri.length * sumti.length) {
     // Pick random predicate
     const predicate = selbri[Math.floor(Math.random() * selbri.length)];
-    const numPlaces = predicate.places.length;
+
+    // Determine if 1-place or 2-place by checking if place string contains 'x₂'
+    const placeString = predicate.places[0] || '';
+    const isTwoPlace = placeString.includes('x₂');
 
     // Generate based on place structure
     let template, blank, english, hint;
 
-    if (numPlaces === 1) {
+    if (!isTwoPlace) {
       // One-place predicate: "mi gleki" (I am happy)
       const subject = sumti[Math.floor(Math.random() * sumti.length)];
       template = `__ ${predicate.lojban}`;
       blank = subject.lojban;
-      english = `${subject.english.split(',')[0]} ${predicate.english}`;
-      hint = `Use a pronoun like "${subject.english.split(',')[0]}"`;
+
+      // Add proper copula for English translation
+      const subjectEng = subject.english.split(',')[0].trim();
+      const copula = getCopula(subjectEng);
+
+      // Check if predicate needs copula (emotions, properties) or is a verb (actions)
+      const needsCopula = predicate.category === 'emotions' ||
+                          predicate.category === 'properties' ||
+                          predicate.category === 'things';
+
+      if (needsCopula) {
+        english = `${subjectEng} ${copula} ${predicate.english}`;
+      } else {
+        // For actions, use verb directly (already conjugated in word data)
+        english = `${subjectEng} ${predicate.english.split(',')[0]}`;
+      }
+
+      hint = `Use a pronoun like "${subjectEng}"`;
     } else {
       // Two-place predicate: "mi prami do" (I love you)
       const subject = sumti[Math.floor(Math.random() * sumti.length)];
@@ -271,18 +313,25 @@ export function generateSentences(currentLevelId, count = 3) {
 
       const object = objectCandidates[Math.floor(Math.random() * objectCandidates.length)];
 
+      // Get properly formatted English words
+      const subjectEng = subject.english.split(',')[0].trim();
+      const objectEng = object.english.split(',')[0].trim();
+
+      // Conjugate the verb based on subject
+      const verb = conjugateVerb(predicate.english, subjectEng);
+
       // Randomly blank subject or object
       const blankSubject = Math.random() < 0.5;
 
       if (blankSubject) {
         template = `__ ${predicate.lojban} ${object.lojban}`;
         blank = subject.lojban;
-        english = `${subject.english.split(',')[0]} ${predicate.english} ${object.english.split(',')[0]}`;
+        english = `${subjectEng} ${verb} ${objectEng}`;
         hint = `Who is doing the action?`;
       } else {
         template = `${subject.lojban} ${predicate.lojban} __`;
         blank = object.lojban;
-        english = `${subject.english.split(',')[0]} ${predicate.english} ${object.english.split(',')[0]}`;
+        english = `${subjectEng} ${verb} ${objectEng}`;
         hint = `Who/what receives the action?`;
       }
     }
