@@ -11,6 +11,10 @@ export const vocabularyLevels = [
       { lojban: 'mi', english: 'I, me, we', category: 'pronouns', examples: ['mi gleki = I am happy'] },
       { lojban: 'do', english: 'you', category: 'pronouns', examples: ['do tavla = you talk'] },
     ],
+    sentences: [
+      { template: '__ gleki', blank: 'mi', english: 'I am happy', hint: 'Use the word for "I"' },
+      { template: '__ tavla', blank: 'do', english: 'You talk', hint: 'Use the word for "you"' },
+    ],
     requiredXP: 0,
   },
   {
@@ -22,6 +26,11 @@ export const vocabularyLevels = [
       { lojban: 'ti', english: 'this (near)', category: 'pronouns', examples: ['ti mlatu = this is a cat'] },
       { lojban: 'ta', english: 'that (medium)', category: 'pronouns', examples: ['ta zdani = that is a house'] },
       { lojban: 'tu', english: 'that (far)', category: 'pronouns', examples: ['tu lorxu = that (far) is a deer'] },
+    ],
+    sentences: [
+      { template: '__ mlatu', blank: 'ti', english: 'This is a cat', hint: 'Point to something near' },
+      { template: '__ zdani', blank: 'ta', english: 'That is a house', hint: 'Point to something at medium distance' },
+      { template: 'mi prami __', blank: 'do', english: 'I love you', hint: 'Combine with previous level words' },
     ],
     requiredXP: 20,
   },

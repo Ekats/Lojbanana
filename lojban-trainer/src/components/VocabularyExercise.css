@@ -546,3 +546,57 @@
 .question {
   position: relative;
 }
+
+/* Fill in the Blank Exercise */
+.fill-blank-exercise {
+  text-align: center;
+}
+
+.english-prompt {
+  font-size: 24px;
+  color: #2c3e50;
+  margin: 20px 0;
+  padding: 15px;
+  background: #fff9e6;
+  border-radius: 12px;
+  border-left: 4px solid #ffa502;
+}
+
+.hint-text {
+  font-size: 14px;
+  color: #7f8c8d;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.sentence-template {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2c3e50;
+  font-family: 'Courier New', monospace;
+  margin: 30px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-blank {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 3px solid #4ecdc4;
+  padding: 0 10px;
+  margin: 0 5px;
+}
+
+.filled-blank {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 3px solid #4ecdc4;
+  padding: 0 10px;
+  margin: 0 5px;
+  color: #4ecdc4;
+}
