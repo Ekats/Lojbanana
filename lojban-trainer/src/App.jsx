@@ -122,8 +122,8 @@ function App() {
           Lojban Logic Trainer - Teaching Lojban as a formal logic system
         </p>
         <p className="footer-note">
-          Built to teach Lojban like programming: predicates as functions,
-          arguments as parameters, logic as boolean operators.
+          Built to teach Lojban like programming: predicates as relations,
+          arguments fill numbered slots, logic as boolean operators.
         </p>
       </footer>
     </div>

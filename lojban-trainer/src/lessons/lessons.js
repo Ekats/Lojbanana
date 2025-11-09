@@ -12,21 +12,21 @@ export const lessons = [
 **Lojban is not a natural language. It's a formal logic system you can speak.**
 
 Think of it like learning programming:
-- **Predicates (selbri)** = functions
-- **Arguments (sumti)** = parameters
+- **Predicates (selbri)** = relations (like database tables)
+- **Arguments (sumti)** = fill numbered slots in relations
 - **Logical connectives** = boolean operators
 
 ## Why Lojban?
 
-1. **Zero ambiguity** - Every sentence has exactly one parse
+1. **Fixed place structures** - Every predicate has unambiguous argument slots
 2. **Explicit logic** - All logical relationships are marked
 3. **Machine-parseable** - Perfect for human-AI communication
 4. **Expresses formal logic** - Like first-order predicate logic, but speakable
 
 ## What You'll Learn
 
-1. **Predicates** - The building blocks (like functions)
-2. **Argument structure** - How to fill in parameters
+1. **Predicates** - The building blocks (relations, like database tables)
+2. **Argument structure** - How to fill numbered slots
 3. **Logical connectives** - AND, OR, IF-THEN, etc.
 4. **Quantification** - "all", "some", "none"
 5. **Practical use** - Expressing specs, logic, and requirements
@@ -43,11 +43,11 @@ Ready to think in pure logic? Let's start.
   {
     id: 2,
     title: "Lesson 1: Predicates (selbri)",
-    description: "The core of Lojban - predicates are like functions",
+    description: "The core of Lojban - predicates are relations",
     content: `
 # Predicates (selbri)
 
-In Lojban, **predicates** are the core. Think of them as functions or verbs.
+In Lojban, **predicates** are the core. Think of them as relations (like database tables) with numbered slots.
 
 ## Structure
 
@@ -112,7 +112,7 @@ Type these words into the parser below and see their place structure!
     content: `
 # Arguments (sumti)
 
-Now that we have predicates (functions), we need **arguments** (parameters).
+Now that we have predicates (relations), we need **arguments** to fill their numbered slots.
 
 ## Pronouns
 
@@ -476,8 +476,8 @@ Every argument is clear, every relationship explicit!
 # Practice: Complete Sentences
 
 You now know:
-- ✅ Predicates (selbri) - functions/relationships
-- ✅ Arguments (sumti) - parameters
+- ✅ Predicates (selbri) - relations with numbered slots
+- ✅ Arguments (sumti) - fill those numbered slots
 - ✅ Logical connectives - AND/OR/etc
 - ✅ Articles - describing things
 
@@ -499,7 +499,7 @@ You can now express:
 - Boolean logic: AND, OR, IFF
 - Precise relationships: who does what to whom
 - Nested descriptions: "a happy talker who loves"
-- Zero ambiguity: machine-parseable
+- Fixed place structures: machine-parseable with numbered argument slots
 
 This is **formal logic you can speak**!
 

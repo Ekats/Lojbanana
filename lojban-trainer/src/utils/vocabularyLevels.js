@@ -20,8 +20,8 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 2,
         icon: '💪',
-        title: 'Arguments = Function Parameters',
-        content: 'In Lojban, pronouns fill argument slots in predicates. Think: function(mi, do) instead of loose words.',
+        title: 'Arguments Fill Relation Slots',
+        content: 'In Lojban, pronouns fill numbered slots in relations. "mi prami do" means the pair (mi, do) is in the prami relation - one of many possible pairs.',
       },
       {
         showAfterExercise: 4,
@@ -96,8 +96,8 @@ export const vocabularyLevels = [
       {
         showAfterExercise: 6,
         icon: '📦',
-        title: 'Like Function Calls',
-        content: 'Think: prami(lover, beloved), gleki(happy_one). Fixed positions help when precision matters.',
+        title: 'Like Database Tables',
+        content: 'Think: prami has columns [lover, beloved]. "mi prami do" = one row. "mi prami ta" = another row. Both can exist! Fixed positions eliminate ambiguity.',
       }
     ]
   },
