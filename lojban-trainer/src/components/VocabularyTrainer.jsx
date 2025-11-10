@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import LevelSelection from './LevelSelection';
 import VocabularyExercise from './VocabularyExercise';
 import GrammarCard from './GrammarCard';
-import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences, getWordsForLevel } from '../utils/vocabularyLevels';
+import { getLevelById, vocabularyLevels, isLevelUnlocked, generateSentences, getWordsForLevel, generateRecallExercises } from '../utils/vocabularyLevels';
 import './VocabularyTrainer.css';
 
 export default function VocabularyTrainer({ onExit }) {
@@ -37,11 +37,15 @@ export default function VocabularyTrainer({ onExit }) {
     const words = [...getWordsForLevel(level)];
     const shuffledWords = words.sort(() => Math.random() - 0.5);
 
+    // Generate recall exercises from previous levels (spaced repetition)
+    const recallCount = level.id > 1 ? Math.min(5, Math.ceil(shuffledWords.length * 0.25)) : 0;
+    const recallExercises = generateRecallExercises(level.id, recallCount);
+
     // Create exercises array with words and their types
     const exercises = [];
     const types = [];
 
-    const getExerciseType = (idx) => {
+    const getExerciseType = (idx, isRecall = false) => {
       if (level.id <= 3) {
         // Early levels: only multiple choice
         const beginnerTypes = ['multiple-choice-english', 'multiple-choice-lojban'];
@@ -57,13 +61,25 @@ export default function VocabularyTrainer({ onExit }) {
       }
     };
 
-    // Strategy: Learn half words, practice with sentences, learn rest, practice more
+    // Strategy: Learn half words, add recall, practice with sentences, learn rest, add recall, practice more
     const halfPoint = Math.ceil(shuffledWords.length / 2);
+    const halfRecall = Math.ceil(recallExercises.length / 2);
 
     // First half of words
     shuffledWords.slice(0, halfPoint).forEach((word, idx) => {
       exercises.push(word);
       types.push(getExerciseType(idx));
+    });
+
+    // First batch of recall exercises (spaced repetition)
+    recallExercises.slice(0, halfRecall).forEach((item, idx) => {
+      exercises.push(item);
+      // Recall exercises use the same type determination
+      if (item.blank) {
+        types.push('fill-blank'); // It's a sentence
+      } else {
+        types.push(getExerciseType(idx, true));
+      }
     });
 
     // Generate and add sentence exercises dynamically
@@ -80,6 +96,16 @@ export default function VocabularyTrainer({ onExit }) {
     shuffledWords.slice(halfPoint).forEach((word, idx) => {
       exercises.push(word);
       types.push(getExerciseType(idx + halfPoint));
+    });
+
+    // Second batch of recall exercises
+    recallExercises.slice(halfRecall).forEach((item, idx) => {
+      exercises.push(item);
+      if (item.blank) {
+        types.push('fill-blank');
+      } else {
+        types.push(getExerciseType(idx + halfRecall, true));
+      }
     });
 
     // Add remaining sentence exercises

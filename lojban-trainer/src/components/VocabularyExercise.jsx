@@ -354,6 +354,12 @@ export default function VocabularyExercise({ word, exerciseType, levelId, onComp
 
   return (
     <div className="vocabulary-exercise">
+      {word.isRecall && (
+        <div className="recall-badge">
+          <span className="recall-icon">🔄</span>
+          <span className="recall-text">Recall from {word.recallFromLevelName}</span>
+        </div>
+      )}
       {renderExercise()}
 
       {showFeedback && (

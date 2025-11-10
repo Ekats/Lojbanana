@@ -468,3 +468,74 @@ export function generateWrongAnswers(word, levelId, count = 3) {
   const shuffled = [...wrongWords].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 }
+
+// Generate recall exercises from previously learned levels
+// Returns words and sentences from earlier levels for spaced repetition
+export function generateRecallExercises(currentLevelId, count = 5) {
+  if (currentLevelId <= 1) return []; // No recall for first level
+
+  const recallWords = [];
+  const recallSentences = [];
+
+  // Get words from previous levels, prioritizing recent ones
+  const previousLevels = [];
+  for (let i = 1; i < currentLevelId; i++) {
+    const level = getLevelById(i);
+    if (level) {
+      previousLevels.push(level);
+    }
+  }
+
+  // Weight recent levels more heavily (exponential decay)
+  const weightedLevels = [];
+  previousLevels.forEach((level, index) => {
+    const weight = Math.pow(2, index); // More recent = higher weight
+    for (let i = 0; i < weight; i++) {
+      weightedLevels.push(level);
+    }
+  });
+
+  // Shuffle and pick levels
+  const shuffled = weightedLevels.sort(() => Math.random() - 0.5);
+  const selectedLevels = new Set();
+
+  // Select words from random previous levels
+  for (const level of shuffled) {
+    if (recallWords.length >= count) break;
+
+    const words = getWordsForLevel(level);
+    if (words.length > 0) {
+      // Pick a random word from this level
+      const word = words[Math.floor(Math.random() * words.length)];
+      // Add recall marker
+      recallWords.push({
+        ...word,
+        isRecall: true,
+        recallFromLevel: level.id,
+        recallFromLevelName: level.name
+      });
+      selectedLevels.add(level.id);
+    }
+  }
+
+  // Generate some recall sentences too (if level has enough words learned)
+  if (currentLevelId >= 3) {
+    const sentenceCount = Math.min(3, Math.floor(count / 2));
+    // Pick a random previous level that has enough words
+    const levelsWithEnoughWords = previousLevels.filter(l => l.id >= 2);
+    if (levelsWithEnoughWords.length > 0) {
+      const randomLevel = levelsWithEnoughWords[Math.floor(Math.random() * levelsWithEnoughWords.length)];
+      const sentences = generateSentences(randomLevel.id, sentenceCount);
+      sentences.forEach(sentence => {
+        recallSentences.push({
+          ...sentence,
+          isRecall: true,
+          recallFromLevel: randomLevel.id,
+          recallFromLevelName: randomLevel.name
+        });
+      });
+    }
+  }
+
+  return [...recallWords, ...recallSentences];
+}
